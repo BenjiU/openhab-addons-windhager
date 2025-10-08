@@ -16,6 +16,7 @@ import static org.openhab.binding.windhagerbiowin.internal.WindhagerBioWinBindin
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.binding.BaseThingHandlerFactory;
@@ -40,6 +41,11 @@ public class WindhagerBioWinHandlerFactory extends BaseThingHandlerFactory {
 
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
-        return new WindhagerBioWinHandler(thing);
+        ThingTypeUID thingTypeUID = thing.getThingTypeUID();
+        if (thingTypeUID == THING_TYPE_BRIDGE) {
+            return new WindhagerBioWinBridge((Bridge) thing);
+        } else {
+            return new WindhagerBioWinHandler(thing);
+        }
     }
 }

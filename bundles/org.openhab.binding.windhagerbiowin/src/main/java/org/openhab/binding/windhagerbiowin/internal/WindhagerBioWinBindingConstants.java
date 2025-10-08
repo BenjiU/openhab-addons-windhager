@@ -37,12 +37,14 @@ public class WindhagerBioWinBindingConstants {
     private static final String BINDING_ID = "windhagerbiowin";
 
     // List of all Thing Type UIDs
+    public static final ThingTypeUID THING_TYPE_BRIDGE = new ThingTypeUID(BINDING_ID, "Bridge");
     public static final ThingTypeUID THING_TYPE_BIOWIN = new ThingTypeUID(BINDING_ID, "BioWin");
     public static final ThingTypeUID THING_TYPE_PUFFER = new ThingTypeUID(BINDING_ID, "Pufferspeicher");
     public static final ThingTypeUID THING_TYPE_HEIZKREIS = new ThingTypeUID(BINDING_ID, "Heizkreis");
 
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = new HashSet<>();
     static {
+        SUPPORTED_THING_TYPES_UIDS.add(THING_TYPE_BRIDGE);
         SUPPORTED_THING_TYPES_UIDS.add(THING_TYPE_BIOWIN);
         SUPPORTED_THING_TYPES_UIDS.add(THING_TYPE_PUFFER);
         SUPPORTED_THING_TYPES_UIDS.add(THING_TYPE_HEIZKREIS);
