@@ -13,19 +13,14 @@
 package org.openhab.binding.windhagerbiowin.internal;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.openhab.core.thing.ThingTypeUID;
 
 /**
- * The {@link WindhagerBioWinBindingConstants} class defines common constants, which are
- * used across the whole binding.
+ * Holds the configuration of a {@link BioWinChannel}.
  *
- * @author Benjamin Utz - Initial contribution
+ * @author David Graeff - Initial contribution
  */
 @NonNullByDefault
-public class WindhagerBioWinBindingConstants {
-
-    private static final String BINDING_ID = "windhagerbiowin";
-
-    // List of all Thing Type UIDs
-    public static final ThingTypeUID THING_TYPE_BIOWIN = new ThingTypeUID(BINDING_ID, "WindhagerBioWinHandler");
+public class BioWinChannelConfig {
+    public String OID = "";
+    public int refreshIntervall = 3600;
 }

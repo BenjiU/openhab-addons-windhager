@@ -4,45 +4,57 @@
 	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
-	<!-- Sample Thing Type -->
-	<thing-type id="sample">
-		<!-- Comment this in for Things which need a Bridge to function.
-			<supported-bridge-type-refs>
-			<bridge-type-ref id="WindhagerBioWinBridge" />
-			</supported-bridge-type-refs>
-		-->
-
-		<label>WindhagerBioWin Binding Thing</label>
-		<description>Sample thing for WindhagerBioWin Binding</description>
-
-		<channels>
-			<channel id="channel1" typeId="sample-channel"/>
-		</channels>
+	<thing-type id="WindhagerBioWinHandler" extensible="BioWinChannel">
+		<label>Windhager BioWin Webserver</label>
+		<description>A connection to a Windhager BioWin Webserver</description>
 
 		<config-description>
-			<parameter name="hostname" type="text" required="true">
+			<parameter name="host" type="text" required="true">
+				<label>Webserver Hostname/IP</label>
+				<description>The IP/Hostname of the BioWin Webserver</description>
 				<context>network-address</context>
-				<label>Hostname</label>
-				<description>Hostname or IP address of the device</description>
+				<default>bennibus.fritz.box</default>
 			</parameter>
-			<parameter name="password" type="text" required="true">
-				<context>password</context>
-				<label>Password</label>
-				<description>Password to access the device</description>
-			</parameter>
-			<parameter name="refreshInterval" type="integer" unit="s" min="1">
-				<label>Refresh Interval</label>
-				<description>Interval the device is polled in sec.</description>
-				<default>600</default>
+
+			<parameter name="port" type="integer">
+				<label>Webserver Port</label>
+				<description>The port is optional, if none is provided, the typical
+					port 80 is used.</description>
+				<context>network-address</context>
 				<advanced>true</advanced>
+				<default>8080</default>
+			</parameter>
+
+			<parameter name="username" type="text" required="true">
+				<label>Username</label>
+				<description>The Webserver username</description>
+				<default>User</default>
+			</parameter>
+
+			<parameter name="password" type="text" required="true">
+				<label>Password</label>
+				<description>The Webserver password</description>
+				<context>password</context>
+				<default>testPasswort</default>
 			</parameter>
 		</config-description>
 	</thing-type>
 
-	<!-- Sample Channel Type -->
-	<channel-type id="sample-channel">
-		<item-type>Number:Temperature</item-type>
-		<label>Example Temperature</label><!-- Use uppercase words, except prepositions. 2-3 words, max 25 chars -->
-		<description>Sample channel for WindhagerBioWin Binding</description>
+	<channel-type id="BioWinChannel">
+		<kind>trigger</kind>
+		<label>Publish Trigger</label>
+		<description>This channel is triggered when a value is published to the configured MQTT topic on this broker
+			connection. The event payload will be the received MQTT topic value.</description>
+		<event></event>
+		<config-description>
+			<parameter name="OID" type="text" required="true">
+				<label>OID of the value to be polled</label>
+				<description></description>
+			</parameter>
+			<parameter name="refreshIntervall" type="integer" required="false">
+				<label>Update interval in seconds</label>
+				<description></description>
+			</parameter>
+		</config-description>
 	</channel-type>
 </thing:thing-descriptions>

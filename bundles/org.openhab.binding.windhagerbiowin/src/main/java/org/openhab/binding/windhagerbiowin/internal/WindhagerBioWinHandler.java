@@ -16,6 +16,7 @@ import static org.openhab.binding.windhagerbiowin.internal.WindhagerBioWinBindin
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.core.thing.Channel;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingStatus;
@@ -44,23 +45,27 @@ public class WindhagerBioWinHandler extends BaseThingHandler {
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        if (CHANNEL_1.equals(channelUID.getId())) {
-            if (command instanceof RefreshType) {
-                // TODO: handle data refresh
-            }
-
-            // TODO: handle command
-
-            // Note: if communication with thing fails for some reason,
-            // indicate that by setting the status with detail information:
-            // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
-            // "Could not control device at IP address x.x.x.x");
+        // if (CHANNEL_1.equals(channelUID.getId())) {
+        if (command instanceof RefreshType) {
+            // TODO: handle data refresh
+            logger.warn("command '" + command + "' instanceof RefreshType");
         }
+        logger.warn("command '" + command + "'");
+
+        // TODO: handle command
+
+        // Note: if communication with thing fails for some reason,
+        // indicate that by setting the status with detail information:
+        // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
+        // "Could not control device at IP address x.x.x.x");
+        // }
+        logger.warn("handle Command '" + command + "' for '" + channelUID + "'");
     }
 
     @Override
     public void initialize() {
         config = getConfigAs(WindhagerBioWinConfiguration.class);
+        logger.warn("initialize");
 
         // TODO: Initialize the handler.
         // The framework requires you to return from this method quickly, i.e. any network access must be done in
@@ -70,6 +75,12 @@ public class WindhagerBioWinHandler extends BaseThingHandler {
         // In case you can not decide the thing status directly (e.g. for long running connection handshake using WAN
         // access or similar) you should set status UNKNOWN here and then decide the real status asynchronously in the
         // background.
+        for (Channel channel : thing.getChannels()) {
+            final BioWinChannelConfig channelConfig = channel.getConfiguration().as(BioWinChannelConfig.class);
+            BioWinChannel c = new BioWinChannel(channelConfig, channel.getUID(), this);
+            // channelStateByChannelUID.put(channel.getUID(), c);
+            logger.warn("initialize channel '" + channelConfig.OID + "'");
+        }
 
         // set the thing status to UNKNOWN temporarily and let the background task decide for the real status.
         // the framework is then able to reuse the resources from the thing handler initialization.
@@ -90,7 +101,6 @@ public class WindhagerBioWinHandler extends BaseThingHandler {
         // These logging types should be primarily used by bindings
         // logger.trace("Example trace message");
         // logger.debug("Example debug message");
-        // logger.warn("Example warn message");
         //
         // Logging to INFO should be avoided normally.
         // See https://www.openhab.org/docs/developer/guidelines.html#f-logging
