@@ -67,6 +67,46 @@ public class WindhagerBioWinHandler extends BaseThingHandler {
         config = getConfigAs(WindhagerBioWinConfiguration.class);
         logger.warn("initialize");
 
+        updateStatus(ThingStatus.UNKNOWN);
+
+        startUp();
+    }
+
+    /*
+     * This method starts the operation of this handler
+     * Connect to the slave bridge
+     * Get registers to poll
+     * Start the periodic polling
+     */
+    private void startUp() {
+        logger.warn("startUp");
+        connectEndpoint();
+
+        createPollThread();
+    }
+
+    private void createPollThread() {
+        /*
+         * f1 = scheduler.scheduleAtFixedRate(() -> {
+         * logger.warn("TODO: thread to data refresh");
+         * try {
+         * URI uri_verbrauch = new URI("http://10.10.10.22:80/api/1.0/datapoint/1/60/0/23/103/0");
+         * ncd.request(uri_verbrauch, (String s, State val) -> {
+         * internalUpdateState(s, val);
+         * });
+         * 
+         * } catch (URISyntaxException e) {
+         * // TODO Auto-generated catch block
+         * e.printStackTrace();
+         * }
+         * }, config.refreshInterval, config.refreshInterval, TimeUnit.SECONDS);
+         */
+
+        // These logging types should be primarily used by bindings
+        // logger.trace("Example trace message");
+        // logger.debug("Example debug message");
+        logger.warn("Example warn message");
+
         // TODO: Initialize the handler.
         // The framework requires you to return from this method quickly, i.e. any network access must be done in
         // the background initialization below.
@@ -81,11 +121,15 @@ public class WindhagerBioWinHandler extends BaseThingHandler {
             // channelStateByChannelUID.put(channel.getUID(), c);
             logger.warn("initialize channel '" + channelConfig.OID + "'");
         }
+    }
 
-        // set the thing status to UNKNOWN temporarily and let the background task decide for the real status.
-        // the framework is then able to reuse the resources from the thing handler initialization.
-        // we set this upfront to reliably check status updates in unit tests.
-        updateStatus(ThingStatus.UNKNOWN);
+    /**
+     * Get a reference to the modbus endpoint
+     */
+    private void connectEndpoint() {
+        // if (ncd != null) {
+        // return;
+        // }
 
         // Example for background initialization:
         scheduler.execute(() -> {
@@ -97,18 +141,13 @@ public class WindhagerBioWinHandler extends BaseThingHandler {
                 updateStatus(ThingStatus.OFFLINE);
             }
         });
+        // ncd = new NettyClientDemo("Service", "6FN&4#w1Hb-7");
 
-        // These logging types should be primarily used by bindings
-        // logger.trace("Example trace message");
-        // logger.debug("Example debug message");
-        //
-        // Logging to INFO should be avoided normally.
-        // See https://www.openhab.org/docs/developer/guidelines.html#f-logging
+        updateStatus(ThingStatus.ONLINE);
+    }
 
-        // Note: When initialization can NOT be done set the status with more details for further
-        // analysis. See also class ThingStatusDetail for all available status details.
-        // Add a description to give user information to understand why thing does not work as expected. E.g.
-        // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
-        // "Can not access device as username and/or password are invalid");
+    @Override
+    public void dispose() {
+        logger.warn("dispose");
     }
 }

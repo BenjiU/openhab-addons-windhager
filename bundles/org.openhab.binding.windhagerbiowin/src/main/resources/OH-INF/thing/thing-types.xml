@@ -43,8 +43,7 @@
 	<channel-type id="BioWinChannel">
 		<kind>trigger</kind>
 		<label>Publish Trigger</label>
-		<description>This channel is triggered when a value is published to the configured MQTT topic on this broker
-			connection. The event payload will be the received MQTT topic value.</description>
+		<description>This channel is triggered when the value of the given OID changed</description>
 		<event></event>
 		<config-description>
 			<parameter name="OID" type="text" required="true">
